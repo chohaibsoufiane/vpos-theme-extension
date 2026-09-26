@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "VPOS Brutalist Dashboard",
+  "version": "1.0",
+  "description": "Transforms the VPOS interface into a brutalist, full-screen launchpad.",
+  "permissions": ["tabs"],
+  "content_scripts": [
+    {
+      "matches": ["*://vpos.cartomat.com/*"],
+      "js": ["page-patch.js"],
+      "world": "MAIN",
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://vpos.cartomat.com/*"],
+      "css": ["content.css"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["page-patch.js", "logos/*"],
+      "matches": ["*://vpos.cartomat.com/*"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Reload VPOS Extension & Page"
+  }
+}

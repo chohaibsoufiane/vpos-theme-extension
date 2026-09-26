@@ -1,0 +1,7 @@
+node_modules/
+extracted/
+downloaded-assets/
+original-logos/
+vpos.css
+*.log
+.DS_Store
