@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "jpeg-js": "^0.4.4",
+    "opentype.js": "^2.0.0",
     "pngjs": "^7.0.0",
     "potrace": "^2.1.8"
   }

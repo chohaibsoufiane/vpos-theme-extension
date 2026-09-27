@@ -1,4 +1,8 @@
 const LOGO_MAP = {
+  // Brand Header Logo
+  'logo-text.png': 'vpos.svg',
+  'logo.png': 'vpos.svg',
+
   // Telecoms
   'orange.png': 'orange.svg',
   'inwi.png': 'inwi.svg',
@@ -383,6 +387,7 @@ function observeAndFormatTable() {
   if (window.vposTableObserver) return;
 
   // Run immediately on existing DOM
+  updateHeaderLogo();
   injectHeaderNav();
   fixCheckboxCells();
   fixInputs();
@@ -393,6 +398,7 @@ function observeAndFormatTable() {
   // Also keep running every 500ms for the first 5 seconds in case Angular renders late
   let retries = 10;
   const retryInterval = setInterval(() => {
+    updateHeaderLogo();
     injectHeaderNav();
     fixCheckboxCells();
     fixInputs();
@@ -403,6 +409,7 @@ function observeAndFormatTable() {
   }, 500);
   
   window.vposTableObserver = new MutationObserver(() => {
+    updateHeaderLogo();
     injectHeaderNav();
     if (document.body.classList.contains('view-form') || document.body.classList.contains('view-reload') || document.body.classList.contains('view-transaction')) {
       injectBackButton();
@@ -508,7 +515,34 @@ function restoreHomeScroll() {
   restoreInterval = setInterval(doScroll, 40);
 }
 
+function updateHeaderLogo() {
+  const pageLogo = document.querySelector('.page-header .page-logo');
+  if (!pageLogo) return;
+
+  const vposSvgUrl = chrome.runtime.getURL('logos/vpos.svg');
+  const logoImgs = pageLogo.querySelectorAll('img, .logo-default');
+
+  if (logoImgs.length > 0) {
+    logoImgs.forEach(img => {
+      if (img.getAttribute('src') !== vposSvgUrl && !img.src.endsWith('vpos.svg')) {
+        img.src = vposSvgUrl;
+        img.alt = 'VPOS';
+      }
+    });
+  } else {
+    const link = pageLogo.querySelector('a');
+    if (link && !link.querySelector('img')) {
+      const img = document.createElement('img');
+      img.src = vposSvgUrl;
+      img.alt = 'VPOS';
+      img.className = 'logo-default';
+      link.appendChild(img);
+    }
+  }
+}
+
 function injectHeaderNav() {
+  updateHeaderLogo();
   const headerInner = document.querySelector('.page-header-inner');
   if (!headerInner || document.getElementById('vpos-nav-tabs')) return;
 
@@ -559,6 +593,7 @@ function switchTab(tab) {
 function updateLayoutState() {
   const hash = window.location.hash || '';
   
+  updateHeaderLogo();
   injectHeaderNav();
   injectCustomGrid();
   
