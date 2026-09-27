@@ -1527,30 +1527,43 @@ body.view-transaction .portlet-title {
 }
 
 /* Align Search button on the same line as the other filter elements */
-body.view-transaction ctc-table > .row {
+body.view-transaction .lnc-table > .row:first-child,
+body.view-transaction .lnc-table .row:first-of-type,
+body.view-transaction .portlet-body .row:first-child,
+body.view-transaction .portlet-body .row:has(.col-md-4) {
   display: flex !important;
   align-items: center !important;
 }
 
-body.view-transaction ctc-table > .row > div {
+body.view-transaction .lnc-table > .row:first-child > div,
+body.view-transaction .lnc-table .row:first-of-type > div,
+body.view-transaction .portlet-body .row:first-child > div,
+body.view-transaction .portlet-body .row:has(.col-md-4) > div {
   display: flex !important;
   align-items: center !important;
 }
 
-body.view-transaction ctc-table > .row .form-group {
+body.view-transaction .lnc-table .form-group,
+body.view-transaction .portlet-body .form-group {
   margin-bottom: 0 !important;
   width: 100% !important;
   display: flex !important;
   align-items: center !important;
 }
 
-body.view-transaction ctc-table button[type="submit"] {
-  margin: 0 !important;
+body.view-transaction button[type="submit"].btn,
+body.view-transaction .lnc-table button[type="submit"],
+body.view-transaction .portlet-body button[type="submit"] {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
-body.view-transaction ctc-table button[type="submit"] i {
+body.view-transaction button[type="submit"].btn i,
+body.view-transaction .lnc-table button[type="submit"] i,
+body.view-transaction .portlet-body button[type="submit"] i {
   margin-right: 6px !important;
 }
+
 
 
 

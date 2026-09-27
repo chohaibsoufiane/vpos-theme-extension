@@ -383,6 +383,40 @@ function updateContentVisibility() {
   }
 }
 
+function alignTransactionSearchButton() {
+  if (!document.body.classList.contains('view-transaction')) return;
+  const searchBtn = document.querySelector('body.view-transaction button[type="submit"]');
+  if (searchBtn) {
+    searchBtn.style.marginTop = '0px';
+    searchBtn.style.marginBottom = '0px';
+    const col = searchBtn.closest('[class*="col-"]');
+    if (col) {
+      col.style.display = 'flex';
+      col.style.alignItems = 'center';
+    }
+    const row = searchBtn.closest('.row');
+    if (row) {
+      row.style.display = 'flex';
+      row.style.alignItems = 'center';
+      const formGroups = row.querySelectorAll('.form-group');
+      formGroups.forEach(fg => {
+        fg.style.marginBottom = '0px';
+        fg.style.display = 'flex';
+        fg.style.alignItems = 'center';
+      });
+      const cols = row.children;
+      for (let i = 0; i < cols.length; i++) {
+        cols[i].style.display = 'flex';
+        cols[i].style.alignItems = 'center';
+      }
+    }
+    const icon = searchBtn.querySelector('i');
+    if (icon && icon.nextSibling && !icon.nextSibling.textContent.startsWith(' ')) {
+      icon.nextSibling.textContent = ' ' + icon.nextSibling.textContent.trim();
+    }
+  }
+}
+
 function observeAndFormatTable() {
   if (window.vposTableObserver) return;
 
@@ -394,6 +428,7 @@ function observeAndFormatTable() {
   formatMontantColumn();
   restructureCheckout();
   updateContentVisibility();
+  alignTransactionSearchButton();
 
   // Also keep running every 500ms for the first 5 seconds in case Angular renders late
   let retries = 10;
@@ -405,6 +440,7 @@ function observeAndFormatTable() {
     formatMontantColumn();
     restructureCheckout();
     updateContentVisibility();
+    alignTransactionSearchButton();
     if (--retries <= 0) clearInterval(retryInterval);
   }, 500);
   
@@ -419,10 +455,12 @@ function observeAndFormatTable() {
     formatMontantColumn();
     restructureCheckout();
     updateContentVisibility();
+    alignTransactionSearchButton();
   });
   
   window.vposTableObserver.observe(document.body, { childList: true, subtree: true });
 }
+
 
 let currentTab = sessionStorage.getItem('vpos_current_tab') || 'services';
 let homeScrollY = parseInt(sessionStorage.getItem('vpos_home_scroll') || '0', 10) || 0;
@@ -636,6 +674,10 @@ function updateLayoutState() {
 
     setTimeout(injectBackButton, 150);
     setTimeout(injectBackButton, 500);
+    setTimeout(alignTransactionSearchButton, 150);
+    setTimeout(alignTransactionSearchButton, 500);
+    setTimeout(alignTransactionSearchButton, 1000);
+    observeAndFormatTable();
   } else {
     // We are on home / admin.home
     document.body.classList.remove('view-form', 'view-reload', 'view-transaction');
