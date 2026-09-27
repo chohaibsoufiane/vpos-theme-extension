@@ -727,10 +727,17 @@ span.select2-selection__clear::before {
   padding: 0 !important;
 }
 
-#vpos-checkout-footer .tools h4,
-.tools h4[style*="margin-top"],
-.tools h4.bold,
-.tools .paymode-header h4 {
+/* Hide legacy search total line from checkout footer */
+#vpos-checkout-footer .tools > h4:not(.row h4),
+.portlet-title .tools > h4:not(.row h4) {
+  display: none !important;
+}
+
+/* Confirmation breakdown rows inside tools */
+#vpos-checkout-footer .tools .paymode-header h4,
+#vpos-checkout-footer .tools .row h4,
+.tools .paymode-header h4,
+.tools .row h4 {
   order: 1 !important;
   margin: 0 !important;
   height: 48px !important;
@@ -748,6 +755,41 @@ span.select2-selection__clear::before {
   align-items: center !important;
   box-sizing: border-box !important;
   letter-spacing: 0.2px !important;
+}
+
+/* Clean Total Bar: TOTAL label (not in a cell) + total amount cell */
+.vpos-clean-total-bar {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  order: 1 !important;
+}
+
+.vpos-total-label {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #334155 !important;
+  letter-spacing: 0.3px !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+.vpos-total-cell {
+  height: 48px !important;
+  min-width: 140px !important;
+  padding: 0 20px !important;
+  background-color: #e2e8f0 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
 }
 
 #vpos-checkout-footer .vpos-moved-pay-btn,

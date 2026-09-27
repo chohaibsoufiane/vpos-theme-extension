@@ -251,7 +251,30 @@ function movePayButtonToFooter() {
   if (!footer) return;
 
   const tools = footer.querySelector('.tools') || footer;
-  const totalH4 = tools.querySelector('h4');
+  const totalH4 = tools.querySelector('h4:not(.row h4)');
+
+  // If there is an original search total H4, create or update our clean total bar
+  if (totalH4) {
+    const text = totalH4.textContent;
+    const amountMatch = text.match(/Montant total des factures\s*:\s*([^\n|]+)/i);
+    const amount = amountMatch ? amountMatch[1].trim() : '0,00 DH';
+
+    let cleanBar = tools.querySelector('.vpos-clean-total-bar');
+    if (!cleanBar) {
+      cleanBar = document.createElement('div');
+      cleanBar.className = 'vpos-clean-total-bar';
+      cleanBar.innerHTML = `
+        <span class="vpos-total-label">TOTAL :</span>
+        <span class="vpos-total-cell">${amount}</span>
+      `;
+      tools.insertBefore(cleanBar, totalH4);
+    } else {
+      const cell = cleanBar.querySelector('.vpos-total-cell');
+      if (cell && cell.textContent !== amount) {
+        cell.textContent = amount;
+      }
+    }
+  }
 
   // Find the Payer button in the form
   const payBtn = document.querySelector('form[name="ppc.form"] button[ng-click*="goPayment"]') ||
@@ -262,9 +285,10 @@ function movePayButtonToFooter() {
   const payWrapper = payBtn.closest('span[ng-show*="isClickSearch"]') || payBtn.parentElement || payBtn;
 
   payWrapper.classList.add('vpos-moved-pay-btn');
-  if (totalH4) {
-    if (totalH4.nextElementSibling !== payWrapper) {
-      totalH4.after(payWrapper);
+  const cleanBar = tools.querySelector('.vpos-clean-total-bar');
+  if (cleanBar) {
+    if (cleanBar.nextElementSibling !== payWrapper) {
+      cleanBar.after(payWrapper);
     }
   } else if (!tools.contains(payWrapper)) {
     tools.appendChild(payWrapper);
@@ -336,23 +360,10 @@ function formatMontantColumn() {
     if (montantThIndex === -1) return;
 
     const montantTh = ths[montantThIndex];
-    montantTh.classList.add('vpos-col-montant');
-
-    // Find the checkbox th if present
-    const checkboxTh = ths.find(th => th.classList.contains('bs-checkbox') || th.querySelector('input[type="checkbox"]'));
-
-    // Move montantTh to be right before checkboxTh (or to the end if no checkbox)
-    if (checkboxTh) {
-      if (montantTh.nextElementSibling !== checkboxTh) {
-        headerRow.insertBefore(montantTh, checkboxTh);
-      }
-    } else {
-      if (headerRow.lastElementChild !== montantTh) {
-        headerRow.appendChild(montantTh);
-      }
+    if (!montantTh.classList.contains('vpos-col-montant')) {
+      montantTh.classList.add('vpos-col-montant');
     }
 
-    // Now format and reorder all rows in tbody
     const tbody = table.querySelector('tbody');
     if (!tbody) return;
 
@@ -360,25 +371,9 @@ function formatMontantColumn() {
     rows.forEach(row => {
       const tds = Array.from(row.children);
       if (tds.length === 0) return;
-
-      // Identify Montant td: either already marked, or by DH/currency pattern, or by original index
-      let montantTd = row.querySelector('td.vpos-col-montant');
-      if (!montantTd) {
-        montantTd = tds.find(td => /\bDH\b|[\d,.]+\s*(?:DH|MAD|DHS)/i.test(td.textContent)) || tds[montantThIndex];
-      }
-
-      if (!montantTd) return;
-      montantTd.classList.add('vpos-col-montant');
-
-      const checkboxTd = tds.find(td => td.classList.contains('bs-checkbox') || td.querySelector('input[type="checkbox"]'));
-      if (checkboxTd) {
-        if (montantTd.nextElementSibling !== checkboxTd) {
-          row.insertBefore(montantTd, checkboxTd);
-        }
-      } else {
-        if (row.lastElementChild !== montantTd) {
-          row.appendChild(montantTd);
-        }
+      const montantTd = tds[montantThIndex];
+      if (montantTd && !montantTd.classList.contains('vpos-col-montant')) {
+        montantTd.classList.add('vpos-col-montant');
       }
     });
   });
@@ -447,47 +442,53 @@ function alignTransactionSearchButton() {
   }
 }
 
+let isObserverRunning = false;
+let observerDebounceTimer = null;
+
 function observeAndFormatTable() {
-  if (window.vposTableObserver) return;
+  function runAll() {
+    if (isObserverRunning) return;
+    isObserverRunning = true;
+
+    try {
+      updateHeaderLogo();
+      injectHeaderNav();
+      if (document.body.classList.contains('view-form') || document.body.classList.contains('view-reload') || document.body.classList.contains('view-transaction')) {
+        injectBackButton();
+      }
+      fixCheckboxCells();
+      fixInputs();
+      formatMontantColumn();
+      restructureCheckout();
+      updateContentVisibility();
+      alignTransactionSearchButton();
+    } catch (e) {
+      console.warn('[VPOS] Observer runAll error:', e);
+    } finally {
+      setTimeout(() => {
+        isObserverRunning = false;
+      }, 50);
+    }
+  }
 
   // Run immediately on existing DOM
-  updateHeaderLogo();
-  injectHeaderNav();
-  fixCheckboxCells();
-  fixInputs();
-  formatMontantColumn();
-  restructureCheckout();
-  updateContentVisibility();
-  alignTransactionSearchButton();
+  runAll();
 
   // Also keep running every 500ms for the first 5 seconds in case Angular renders late
   let retries = 10;
   const retryInterval = setInterval(() => {
-    updateHeaderLogo();
-    injectHeaderNav();
-    fixCheckboxCells();
-    fixInputs();
-    formatMontantColumn();
-    restructureCheckout();
-    updateContentVisibility();
-    alignTransactionSearchButton();
+    runAll();
     if (--retries <= 0) clearInterval(retryInterval);
   }, 500);
-  
+
+  if (window.vposTableObserver) return;
+
   window.vposTableObserver = new MutationObserver(() => {
-    updateHeaderLogo();
-    injectHeaderNav();
-    if (document.body.classList.contains('view-form') || document.body.classList.contains('view-reload') || document.body.classList.contains('view-transaction')) {
-      injectBackButton();
-    }
-    fixCheckboxCells();
-    fixInputs();
-    formatMontantColumn();
-    restructureCheckout();
-    updateContentVisibility();
-    alignTransactionSearchButton();
+    if (isObserverRunning) return;
+    clearTimeout(observerDebounceTimer);
+    observerDebounceTimer = setTimeout(runAll, 40);
   });
-  
+
   window.vposTableObserver.observe(document.body, { childList: true, subtree: true });
 }
 
@@ -635,7 +636,7 @@ function injectHeaderNav() {
 
   nav.querySelector('#vpos-tab-services').addEventListener('click', (e) => {
     e.preventDefault();
-    if (currentTab === 'services' && !window.location.hash.includes('/admin/product/')) {
+    if (currentTab === 'services' && !window.location.hash.includes('/admin/product')) {
       // If already on services view and user clicks Services tab, scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });
       homeScrollY = 0;
@@ -655,7 +656,7 @@ function switchTab(tab) {
   currentTab = tab;
   try { sessionStorage.setItem('vpos_current_tab', tab); } catch(e) {}
 
-  if (window.location.hash.includes('/admin/product/') || window.location.hash.includes('/admin/reload') || window.location.hash.includes('/admin/transaction')) {
+  if (window.location.hash.includes('/admin/product') || window.location.hash.includes('/admin/reload') || window.location.hash.includes('/admin/transaction')) {
     window.location.hash = '#/admin/home';
   }
 
@@ -672,7 +673,7 @@ function updateLayoutState() {
   const tabServices = document.getElementById('vpos-tab-services');
   const tabDownloads = document.getElementById('vpos-tab-downloads');
   
-  if (hash.includes('/admin/product/')) {
+  if (hash.includes('/admin/product')) {
     document.body.classList.remove('view-home', 'view-downloads', 'view-services', 'view-reload', 'view-transaction');
     document.body.classList.add('view-form');
     if (tabServices) tabServices.classList.remove('active');
