@@ -722,6 +722,7 @@ span.select2-selection__clear::before {
   display: flex !important;
   justify-content: flex-end !important;
   align-items: center !important;
+  gap: 16px !important;
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -731,7 +732,9 @@ span.select2-selection__clear::before {
 .tools h4.bold,
 .tools .paymode-header h4 {
   margin: 0 !important;
-  padding: 10px 20px !important;
+  height: 48px !important;
+  line-height: 46px !important;
+  padding: 0 20px !important;
   background-color: #f8fafc !important;
   border: 1px solid #cbd5e1 !important;
   border-radius: 6px !important;
@@ -740,9 +743,28 @@ span.select2-selection__clear::before {
   font-size: 15px !important;
   font-weight: 600 !important;
   white-space: nowrap !important;
-  line-height: 1.5 !important;
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
   letter-spacing: 0.2px !important;
+}
+
+#vpos-checkout-footer .vpos-moved-pay-btn,
+#vpos-checkout-footer span:has(button[ng-click*="goPayment"]) {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+}
+
+#vpos-checkout-footer button[ng-click*="goPayment"],
+#vpos-checkout-footer .vpos-moved-pay-btn button {
+  height: 48px !important;
+  line-height: 48px !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
 }
 
 #vpos-checkout-footer .tools h4::before,
@@ -750,6 +772,7 @@ span.select2-selection__clear::before {
   display: none !important;
   content: "" !important;
 }
+
 
 
 

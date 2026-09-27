@@ -225,22 +225,52 @@ function restructureCheckout() {
   const portlet = document.querySelector('.portlet');
   const titleBox = document.querySelector('.portlet-title');
   
-  if (!portlet || !titleBox || document.getElementById('vpos-checkout-footer')) return;
+  if (!portlet) return;
 
-  const titleChildren = Array.from(titleBox.children);
-  
-  const rightSideElements = titleChildren.filter(el => {
+  let footer = document.getElementById('vpos-checkout-footer');
+  if (!footer && titleBox) {
+    const titleChildren = Array.from(titleBox.children);
+    const rightSideElements = titleChildren.filter(el => {
       return !el.classList.contains('caption') && 
              !el.classList.contains('btn-back-home');
-  });
+    });
 
-  if (rightSideElements.length > 0) {
-       const footer = document.createElement('div');
-       footer.id = 'vpos-checkout-footer';
-       rightSideElements.forEach(el => footer.appendChild(el));
-       portlet.appendChild(footer);
+    if (rightSideElements.length > 0) {
+      footer = document.createElement('div');
+      footer.id = 'vpos-checkout-footer';
+      rightSideElements.forEach(el => footer.appendChild(el));
+      portlet.appendChild(footer);
+    }
+  }
+
+  movePayButtonToFooter();
+}
+
+function movePayButtonToFooter() {
+  const footer = document.getElementById('vpos-checkout-footer');
+  if (!footer) return;
+
+  const tools = footer.querySelector('.tools') || footer;
+  const totalH4 = tools.querySelector('h4');
+
+  // Find the Payer button in the form
+  const payBtn = document.querySelector('form[name="ppc.form"] button[ng-click*="goPayment"]') ||
+                 document.querySelector('button[ng-click*="goPayment"]');
+  if (!payBtn) return;
+
+  // Get wrapper span (which handles ng-show="ppc.isClickSearch")
+  const payWrapper = payBtn.closest('span[ng-show*="isClickSearch"]') || payBtn.parentElement || payBtn;
+
+  if (!tools.contains(payWrapper)) {
+    payWrapper.classList.add('vpos-moved-pay-btn');
+    if (totalH4) {
+      tools.insertBefore(payWrapper, totalH4);
+    } else {
+      tools.appendChild(payWrapper);
+    }
   }
 }
+
 
 // Safely replaces text inside text nodes to avoid breaking Angular bindings
 function replaceTextInNode(node, searchRegex, replacement) {
