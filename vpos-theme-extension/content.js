@@ -261,13 +261,13 @@ function movePayButtonToFooter() {
   // Get wrapper span (which handles ng-show="ppc.isClickSearch")
   const payWrapper = payBtn.closest('span[ng-show*="isClickSearch"]') || payBtn.parentElement || payBtn;
 
-  if (!tools.contains(payWrapper)) {
-    payWrapper.classList.add('vpos-moved-pay-btn');
-    if (totalH4) {
-      tools.insertBefore(payWrapper, totalH4);
-    } else {
-      tools.appendChild(payWrapper);
+  payWrapper.classList.add('vpos-moved-pay-btn');
+  if (totalH4) {
+    if (totalH4.nextElementSibling !== payWrapper) {
+      totalH4.after(payWrapper);
     }
+  } else if (!tools.contains(payWrapper)) {
+    tools.appendChild(payWrapper);
   }
 }
 

@@ -731,6 +731,7 @@ span.select2-selection__clear::before {
 .tools h4[style*="margin-top"],
 .tools h4.bold,
 .tools .paymode-header h4 {
+  order: 1 !important;
   margin: 0 !important;
   height: 48px !important;
   line-height: 46px !important;
@@ -751,6 +752,7 @@ span.select2-selection__clear::before {
 
 #vpos-checkout-footer .vpos-moved-pay-btn,
 #vpos-checkout-footer span:has(button[ng-click*="goPayment"]) {
+  order: 2 !important;
   display: inline-flex !important;
   align-items: center !important;
   margin: 0 !important;
