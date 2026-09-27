@@ -539,6 +539,10 @@ function updateHeaderLogo() {
       link.appendChild(img);
     }
   }
+
+  // Remove hamburger / sidebar toggler icons
+  const togglers = document.querySelectorAll('.page-header .menu-toggler, .page-header .sidebar-toggler, .page-header .responsive-toggler, .menu-toggler');
+  togglers.forEach(t => t.remove());
 }
 
 function injectHeaderNav() {

@@ -77,6 +77,17 @@ a { text-decoration: none !important; }
   object-fit: contain !important;
 }
 
+/* Remove hamburger / sidebar toggler */
+.page-header .menu-toggler,
+.page-header .sidebar-toggler,
+.page-header .responsive-toggler,
+.menu-toggler.sidebar-toggler,
+.menu-toggler.responsive-toggler {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .top-menu .navbar-nav {
   list-style: none !important;
   margin: 0 !important;
