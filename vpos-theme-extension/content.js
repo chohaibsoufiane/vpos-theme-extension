@@ -204,8 +204,8 @@ function injectBackButton() {
   formHeaders.forEach(formHeader => {
     if (!formHeader.querySelector('.btn-back-home')) {
       const backBtn = document.createElement('a');
-      backBtn.className = 'btn red btn-back-home';
-      backBtn.innerHTML = '← RETOUR';
+      backBtn.className = 'btn btn-back-home';
+      backBtn.innerHTML = '<i class="fa fa-arrow-left"></i> <span>Retour</span>';
       backBtn.style.cursor = 'pointer';
       backBtn.href = '#/admin/home';
       backBtn.onclick = (e) => {
@@ -383,6 +383,30 @@ function updateContentVisibility() {
   }
 }
 
+function formatTransactionView() {
+  if (!document.body.classList.contains('view-transaction')) return;
+
+  // Enhance the "Not found !" empty state element
+  const notFoundEl = document.querySelector('body.view-transaction .lnc-table div[data-ng-if*="totalRecords == 0"], body.view-transaction .lnc-table .pull-right:not(.lnc-pagination)');
+  if (notFoundEl && notFoundEl.textContent.trim().toLowerCase().includes('not found')) {
+    if (!notFoundEl.querySelector('.vpos-empty-icon')) {
+      notFoundEl.innerHTML = '<i class="fa fa-inbox vpos-empty-icon" style="font-size: 26px; display: block; margin-bottom: 8px; color: #94a3b8;"></i><span>Aucune transaction trouvée pour cette période</span>';
+    }
+  }
+
+  // Ensure button icon and text have spacing
+  const searchBtn = document.querySelector('body.view-transaction ctc-table button[type="submit"]');
+  if (searchBtn && !searchBtn.dataset.formatted) {
+    searchBtn.dataset.formatted = 'true';
+    const icon = searchBtn.querySelector('i');
+    if (icon && icon.nextSibling) {
+      if (!icon.nextSibling.textContent.startsWith(' ')) {
+        icon.nextSibling.textContent = ' ' + icon.nextSibling.textContent.trim();
+      }
+    }
+  }
+}
+
 function observeAndFormatTable() {
   if (window.vposTableObserver) return;
 
@@ -394,6 +418,7 @@ function observeAndFormatTable() {
   formatMontantColumn();
   restructureCheckout();
   updateContentVisibility();
+  formatTransactionView();
 
   // Also keep running every 500ms for the first 5 seconds in case Angular renders late
   let retries = 10;
@@ -405,6 +430,7 @@ function observeAndFormatTable() {
     formatMontantColumn();
     restructureCheckout();
     updateContentVisibility();
+    formatTransactionView();
     if (--retries <= 0) clearInterval(retryInterval);
   }, 500);
   
@@ -419,6 +445,7 @@ function observeAndFormatTable() {
     formatMontantColumn();
     restructureCheckout();
     updateContentVisibility();
+    formatTransactionView();
   });
   
   window.vposTableObserver.observe(document.body, { childList: true, subtree: true });
@@ -636,6 +663,9 @@ function updateLayoutState() {
 
     setTimeout(injectBackButton, 150);
     setTimeout(injectBackButton, 500);
+    setTimeout(formatTransactionView, 200);
+    setTimeout(formatTransactionView, 600);
+    observeAndFormatTable();
   } else {
     // We are on home / admin.home
     document.body.classList.remove('view-form', 'view-reload', 'view-transaction');
