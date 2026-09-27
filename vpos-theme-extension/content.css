@@ -366,15 +366,10 @@ body.view-transaction .page-content-wrapper {
 }
 
 body.view-form .page-content,
-body.view-reload .page-content {
+body.view-reload .page-content,
+body.view-transaction .page-content {
   padding: 40px !important;
   max-width: 1000px !important;
-  margin: 0 auto !important;
-}
-
-body.view-transaction .page-content {
-  padding: 32px 40px !important;
-  max-width: 1360px !important;
   margin: 0 auto !important;
 }
 
@@ -396,48 +391,16 @@ body.view-transaction .page-content {
   align-items: center !important;
 }
 
-.btn-back-home,
-a.btn-back-home,
-.btn.btn-back-home {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
+.btn-back-home {
+  margin-right: 24px !important;
   background-color: var(--bg-surface) !important;
   border: 1px solid var(--border) !important;
   color: var(--text-primary) !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.3px !important;
-  padding: 8px 18px !important;
-  border-radius: var(--radius-sm) !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
-  transition: all 0.15s ease !important;
-  margin-right: 20px !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-  text-transform: none !important;
+  box-shadow: var(--shadow) !important;
 }
 
-.btn-back-home:hover,
-a.btn-back-home:hover,
-.btn.btn-back-home:hover {
+.btn-back-home:hover {
   background-color: var(--bg-hover) !important;
-  border-color: #cbd5e1 !important;
-  color: var(--text-primary) !important;
-  transform: none !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
-}
-
-.btn-back-home i,
-a.btn-back-home i {
-  font-size: 12px !important;
-  color: var(--text-secondary) !important;
-  transition: transform 0.15s ease !important;
-}
-
-.btn-back-home:hover i,
-a.btn-back-home:hover i {
-  transform: translateX(-2px) !important;
 }
 
 .portlet-title .caption {
@@ -1543,286 +1506,50 @@ body.view-reload a.font-red:hover {
 /* =========================================================
    STATE 4: TRANSACTION VIEW (HISTORIQUE)
    ========================================================= */
-body.view-transaction .page-content {
-  padding: 40px 24px !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
-}
-
 body.view-transaction .portlet.light.bordered {
   background-color: var(--bg-surface) !important;
   border: 1px solid var(--border) !important;
   border-radius: var(--radius) !important;
   box-shadow: var(--shadow) !important;
-  padding: 32px 36px !important;
-  max-width: 100% !important;
+  padding: 32px 40px !important;
+  max-width: 1300px !important;
   margin: 0 auto !important;
 }
 
-/* Header & Back Button: vertically centered */
 body.view-transaction .portlet-title {
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
   gap: 16px !important;
-  padding: 0 0 20px 0 !important;
-  margin-bottom: 24px !important;
+  padding-bottom: 20px !important;
+  margin-bottom: 28px !important;
   border-bottom: 1px solid var(--border) !important;
-  min-height: auto !important;
 }
 
-body.view-transaction .btn.btn-back-home,
-body.view-transaction .btn.red.btn-back-home,
-body.view-transaction a.btn-back-home {
-  background-color: #ef4444 !important;
-  color: #ffffff !important;
-  border: none !important;
-  height: 38px !important;
-  line-height: 38px !important;
-  padding: 0 18px !important;
-  border-radius: var(--radius-sm) !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  margin: 0 18px 0 0 !important;
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.25) !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-}
-
-body.view-transaction .btn.btn-back-home:hover,
-body.view-transaction a.btn-back-home:hover {
-  background-color: #dc2626 !important;
-  color: #ffffff !important;
-  transform: translateY(-1px) !important;
-}
-
-body.view-transaction .portlet-title .caption {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  font-size: 18px !important;
-  font-weight: 700 !important;
-  color: var(--text-primary) !important;
-  letter-spacing: 0.5px !important;
-  height: 38px !important;
-  line-height: 38px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-body.view-transaction .portlet-title .caption i {
-  color: var(--text-primary) !important;
-  font-size: 18px !important;
-  margin-right: 2px !important;
-}
-
-/* Filter Row: exact 44px uniform height & perfect vertical centering */
+/* Align Search button on the same line as the other filter elements */
 body.view-transaction ctc-table > .row {
   display: flex !important;
-  flex-direction: row !important;
   align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 16px !important;
-  margin: 0 0 24px 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
-  width: 100% !important;
 }
 
 body.view-transaction ctc-table > .row > div {
-  padding: 0 !important;
-  margin: 0 !important;
-  float: none !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 body.view-transaction ctc-table > .row .form-group {
-  margin: 0 !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-body.view-transaction ctc-table > .row > .col-md-4 {
-  flex: 1.4 1 240px !important;
-  width: auto !important;
-  max-width: none !important;
-}
-
-body.view-transaction ctc-table > .row > .col-md-3 {
-  flex: 1 1 200px !important;
-  width: auto !important;
-  max-width: none !important;
-}
-
-body.view-transaction ctc-table > .row > .col-md-2 {
-  flex: 0 0 auto !important;
-  width: auto !important;
-  max-width: none !important;
-}
-
-/* 1. Date Range button (green, 44px) */
-body.view-transaction date-range,
-body.view-transaction date-range .btn,
-body.view-transaction date-range .btn-fit-height,
-body.view-transaction date-range .tooltips,
-body.view-transaction .tooltips.btn.green {
-  background-color: var(--success) !important;
-  color: #ffffff !important;
-  border: none !important;
-  height: 44px !important;
-  line-height: 44px !important;
-  padding: 0 16px !important;
-  border-radius: var(--radius-sm) !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
+  margin-bottom: 0 !important;
   width: 100% !important;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2) !important;
-  text-transform: uppercase !important;
-  box-sizing: border-box !important;
-  cursor: pointer !important;
-}
-
-body.view-transaction date-range .btn:hover,
-body.view-transaction date-range .tooltips:hover,
-body.view-transaction .tooltips.btn.green:hover {
-  background-color: #059669 !important;
-  color: #ffffff !important;
-  transform: translateY(-1px) !important;
-}
-
-body.view-transaction date-range .icon-calendar,
-body.view-transaction date-range .fa-calendar {
-  color: #ffffff !important;
-  margin-right: 8px !important;
-  font-size: 14px !important;
-}
-
-body.view-transaction date-range .fa-angle-down {
-  color: #ffffff !important;
-  margin-left: auto !important;
-  font-size: 14px !important;
-}
-
-body.view-transaction date-range span.date-range {
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  font-size: 13px !important;
-}
-
-/* 2. Selects (44px, matching aesthetic) */
-body.view-transaction lnc-select,
-body.view-transaction .select2-container {
-  width: 100% !important;
-  height: 44px !important;
-  display: block !important;
-}
-
-body.view-transaction .select2-container .select2-choice,
-body.view-transaction .select2-container--bootstrap .select2-selection--single,
-body.view-transaction .select2-container .select2-selection {
-  background-color: #f1f5f9 !important;
-  border: 1px solid transparent !important;
-  border-radius: var(--radius-sm) !important;
-  height: 44px !important;
-  line-height: 44px !important;
-  padding: 0 16px !important;
   display: flex !important;
   align-items: center !important;
-  box-shadow: none !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  box-sizing: border-box !important;
-  transition: all 0.15s ease !important;
 }
 
-body.view-transaction .select2-container .select2-choice:hover,
-body.view-transaction .select2-container--bootstrap .select2-selection--single:hover {
-  background-color: #e2e8f0 !important;
-}
-
-body.view-transaction .select2-container .select2-chosen,
-body.view-transaction .select2-container--bootstrap .select2-selection__rendered {
-  line-height: 44px !important;
-  color: #475569 !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  padding: 0 !important;
+body.view-transaction ctc-table button[type="submit"] {
   margin: 0 !important;
 }
 
-body.view-transaction .select2-arrow,
-body.view-transaction .select2-selection__arrow {
-  height: 44px !important;
-  top: 0 !important;
-  right: 12px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: none !important;
-  background: transparent !important;
-}
-
-body.view-transaction .select2-arrow b {
-  margin-top: 0 !important;
-}
-
-/* 3. Search Button (green, 44px) */
-body.view-transaction ctc-table button[type="submit"].btn,
-body.view-transaction ctc-table button.btn.green {
-  background-color: var(--success) !important;
-  color: #ffffff !important;
-  border: none !important;
-  height: 44px !important;
-  line-height: 44px !important;
-  padding: 0 24px !important;
-  border-radius: var(--radius-sm) !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2) !important;
-  cursor: pointer !important;
-  white-space: nowrap !important;
-  box-sizing: border-box !important;
-  transition: all 0.15s ease !important;
-}
-
-body.view-transaction ctc-table button[type="submit"].btn:hover,
-body.view-transaction ctc-table button.btn.green:hover {
-  background-color: #059669 !important;
-  color: #ffffff !important;
-  transform: translateY(-1px) !important;
-}
-
-body.view-transaction ctc-table button[type="submit"].btn i.fa {
+body.view-transaction ctc-table button[type="submit"] i {
   margin-right: 6px !important;
-  font-size: 14px !important;
-  color: #ffffff !important;
-}
-
-/* 4. Not found text: centered cleanly */
-body.view-transaction .lnc-table div[data-ng-if*="totalRecords == 0"],
-body.view-transaction .lnc-table .pull-right:not(.lnc-pagination) {
-  float: none !important;
-  display: block !important;
-  width: 100% !important;
-  text-align: center !important;
-  margin: 36px auto 16px auto !important;
-  padding: 20px !important;
-  color: var(--text-secondary) !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  clear: both !important;
 }
 
 
